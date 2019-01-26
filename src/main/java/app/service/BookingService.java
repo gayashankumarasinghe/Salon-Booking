@@ -9,4 +9,6 @@ public interface BookingService {
     List<BookingModel> getAllBookings();
     Optional<Iterable<BookingModel>> findByStatus(String status);
     Optional<BookingModel> findById(String id);
+
+    Optional<Iterable<BookingModel>> findAllByStylistEmail(String stylistEmail);
 }

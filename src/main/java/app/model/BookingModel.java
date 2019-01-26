@@ -2,31 +2,41 @@ package app.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name ="book")
 public class BookingModel {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @Column(name = "id")
     private String id;
-    private String SalonId;
+    @Column(name = "SalonId")
+    private String salonId;
+    @Column(name = "StylistId")
     private String stylistId;
-    private Date bookingDate;
+    @Column(name = "BookingDate")
+    private String bookingDate;
+    @Column(name = "Status")
     private String status;
+    @Column(name = "SalonEmail")
+    private String salonEmail;
+    @Column(name = "StylistEmail")
+    private String stylistEmail;
 
     public BookingModel() {
     }
 
-    public BookingModel(String salonId, String stylistId, Date bookingDate, String status) {
-        SalonId = salonId;
+    public BookingModel(String id, String salonId, String stylistId, String bookingDate, String status, String salonEmail, String stylistEmail) {
+        this.id = id;
+        this.salonId = salonId;
         this.stylistId = stylistId;
         this.bookingDate = bookingDate;
         this.status = status;
+        this.salonEmail = salonEmail;
+        this.stylistEmail = stylistEmail;
     }
 
     public String getId() {
@@ -38,11 +48,11 @@ public class BookingModel {
     }
 
     public String getSalonId() {
-        return SalonId;
+        return salonId;
     }
 
     public void setSalonId(String salonId) {
-        SalonId = salonId;
+        this.salonId = salonId;
     }
 
     public String getStylistId() {
@@ -53,11 +63,11 @@ public class BookingModel {
         this.stylistId = stylistId;
     }
 
-    public Date getBookingDate() {
+    public String getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Date bookingDate) {
+    public void setBookingDate(String bookingDate) {
         this.bookingDate = bookingDate;
     }
 
@@ -67,6 +77,22 @@ public class BookingModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSalonEmail() {
+        return salonEmail;
+    }
+
+    public void setSalonEmail(String salonEmail) {
+        this.salonEmail = salonEmail;
+    }
+
+    public String getStylistEmail() {
+        return stylistEmail;
+    }
+
+    public void setStylistEmail(String stylistEmail) {
+        this.stylistEmail = stylistEmail;
     }
 }
 
