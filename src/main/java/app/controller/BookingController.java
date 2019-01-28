@@ -16,9 +16,16 @@ public class BookingController {
 
     private BookingService bookingService;
 
-    @PostMapping("/request")
-    public BookingModel bookStylist(@RequestBody BookingModel bookingModel) {
-        return this.bookingService.save(bookingModel);
+    @PostMapping("/confirm-booking")
+    public boolean bookStylist(@RequestBody BookingModel bookingModel) {
+    	bookingModel.setStatus("pending");
+    	try {
+    		this.bookingService.save(bookingModel);
+    		return true;
+    	}catch(Error e) {
+    		return false;
+    	}
+        
     }
 
     @GetMapping("/bookings")
@@ -46,26 +53,39 @@ public class BookingController {
 
         return null;
     }
-
-    @PutMapping("/completed-requests/{id}/{accepted}")
-    public BookingModel updateStatus(@PathVariable("id") String id, @PathVariable("accepted") boolean accepted) {
-        Optional<BookingModel> existBooking = this.bookingService.findById(id);
-        if(existBooking.isPresent()) {
-//            updatedBooking = existBooking.get();
-            if(accepted) {
-//                updatedBooking.setStatus("accepted");
-                existBooking.get().setStatus("accepted");
-            }
-            else {
-//                updatedBooking.setStatus("rejected");
-                existBooking.get().setStatus("rejected");
-            }
-//            BeanUtils.copyProperties(updatedBooking, existBooking);
-            this.bookingService.save(existBooking.get());
-            return existBooking.get();
+    
+    @PostMapping("/check-status")
+    @ResponseBody
+    public Iterable<BookingModel> findAllBySalonEmail(@RequestBody CheckToken token){
+        Optional<Iterable<BookingModel>> booking = bookingService.findAllBySalonEmail(token.salonEmail);
+        if(booking.isPresent()) {
+            return booking.get();
         }
 
         return null;
+    }
+    
+
+    @PostMapping("/response-booking")
+    @ResponseBody
+    public boolean updateStatus(@RequestBody CheckToken token) {
+        Optional<BookingModel> existBooking = this.bookingService.findById(token.bookingId);
+        if(existBooking.isPresent()) {
+//            updatedBooking = existBooking.get();
+            if(token.status == "accept") {
+//                updatedBooking.setStatus("accepted");
+                existBooking.get().setStatus(token.status);
+            }
+            else {
+//                updatedBooking.setStatus("rejected");
+                existBooking.get().setStatus(token.status);
+            }
+//            BeanUtils.copyProperties(updatedBooking, existBooking);
+            this.bookingService.save(existBooking.get());
+            return true;
+        }
+
+        return false;
 
     }
 

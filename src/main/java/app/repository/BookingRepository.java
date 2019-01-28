@@ -9,4 +9,6 @@ public interface BookingRepository extends JpaRepository<BookingModel, String> {
     Optional<Iterable<BookingModel>> findByStatus(String status);
 
     Optional<Iterable<BookingModel>> findAllByStylistEmail(String stylistEmail);
+
+	Optional<Iterable<BookingModel>> findAllBySalonEmail(String salonEmail);
 }

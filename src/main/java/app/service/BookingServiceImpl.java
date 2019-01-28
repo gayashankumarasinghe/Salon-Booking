@@ -42,4 +42,9 @@ public class BookingServiceImpl implements BookingService{
     public void setBookingRepository(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
+
+	@Override
+	public Optional<Iterable<BookingModel>> findAllBySalonEmail(String salonEmail) {
+		return this.bookingRepository.findAllBySalonEmail(salonEmail);
+	}
 }
